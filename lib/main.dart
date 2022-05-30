@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Ynovify',
       theme: ThemeData(
-        primarySwatch: Colors.brown,
-      ),
+          primarySwatch: Colors.brown,
+          scaffoldBackgroundColor: const Color(0x00A2A2A2)),
       home: const MyHomePage(title: 'Ynovify'),
     );
   }
@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool selected = true;
-  int selMusic = 0;
+  int selectMusic = 0;
   String song_duration = "";
 
   List<Music> myMusicList = [
@@ -55,26 +55,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _init(selMusic);
+    _init(selectMusic);
   }
 
-  void _incrementCounter() {
+  void _incrementMusicCounter() {
     setState(() {
-      (selMusic == myMusicList.length - 1) ? selMusic = 0 : selMusic++;
+      (selectMusic == myMusicList.length - 1) ? selectMusic = 0 : selectMusic++;
     });
-    _init(selMusic);
+    _init(selectMusic);
   }
 
-  void _decrementCounter() {
+  void _decrementMusicCounter() {
     setState(() {
-      (selMusic == 0) ? selMusic = myMusicList.length - 1 : selMusic--;
+      (selectMusic == 0) ? selectMusic = myMusicList.length - 1 : selectMusic--;
     });
-    _init(selMusic);
+    _init(selectMusic);
   }
 
-  Future<void> _init(int selMusic) async {
+  Future<void> _init(int selectMusic) async {
     await _player.setAudioSource(
-        AudioSource.uri(Uri.parse(myMusicList[selMusic].urlSong)));
+        AudioSource.uri(Uri.parse(myMusicList[selectMusic].urlSong)));
     song_duration =
         "${_player.duration!.inMinutes}:${_player.duration!.inSeconds % 60}";
   }
@@ -91,21 +91,23 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(50),
-              child: Image.asset(myMusicList[selMusic].imagePath),
+              child: Image.asset(myMusicList[selectMusic].imagePath),
             ),
             Text(
-              myMusicList[selMusic].title,
+              myMusicList[selectMusic].title,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
             Text(
-              myMusicList[selMusic].singer,
+              myMusicList[selectMusic].singer,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,
+                color: Colors.white,
               ),
             ),
             Padding(
@@ -115,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 10,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -126,13 +129,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
+                      color: Colors.white,
                       icon: const Icon(Icons.fast_rewind),
-                      onPressed: _decrementCounter,
+                      onPressed: _decrementMusicCounter,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
+                      color: Colors.white,
                       icon: Icon(selected ? Icons.play_arrow : Icons.pause),
                       onPressed: () {
                         setState(() {
@@ -145,8 +150,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
+                      color: Colors.white,
                       icon: const Icon(Icons.fast_forward),
-                      onPressed: _incrementCounter,
+                      onPressed: _incrementMusicCounter,
                     ),
                   )
                 ],
