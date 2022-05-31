@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ynov_ify/music.dart';
 import 'package:just_audio/just_audio.dart';
 
+const Color principal = Color.fromARGB(255, 66, 255, 0);
+const Color secondary = Colors.white;
 void main() {
   runApp(const MyApp());
 }
@@ -14,8 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Ynovify',
       theme: ThemeData(
-          primarySwatch: Colors.brown,
-          scaffoldBackgroundColor: const Color(0x00A2A2A2)),
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: const Color.fromARGB(255, 33, 33, 33),
+      ),
       home: const MyHomePage(title: 'Ynovify'),
     );
   }
@@ -33,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool selected = true;
   int selectMusic = 0;
-  String song_duration = "";
+  String songduration = "";
 
   List<Music> myMusicList = [
     Music(
@@ -73,10 +76,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _init(int selectMusic) async {
-    await _player.setAudioSource(
-        AudioSource.uri(Uri.parse(myMusicList[selectMusic].urlSong)));
-    song_duration =
-        "${_player.duration!.inMinutes}:${_player.duration!.inSeconds % 60}";
+    await _player
+        .setAudioSource(
+            AudioSource.uri(Uri.parse(myMusicList[selectMusic].urlSong)))
+        .then((value) => {
+              setState(() {
+                songduration = "${value!.inMinutes}:${value.inSeconds % 60}";
+              })
+            });
   }
 
   @override
@@ -90,16 +97,22 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(50),
-              child: Image.asset(myMusicList[selectMusic].imagePath),
-            ),
+                padding: const EdgeInsets.all(50),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: secondary, width: 1),
+                  ),
+                  child: Image.asset(myMusicList[selectMusic].imagePath),
+                )
+                // child: Image.asset(myMusicList[selectMusic].imagePath),
+                ),
             Text(
               myMusicList[selectMusic].title,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: secondary,
               ),
             ),
             Text(
@@ -107,17 +120,17 @@ class _MyHomePageState extends State<MyHomePage> {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: secondary,
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                song_duration,
+                songduration,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 10,
-                  color: Colors.white,
+                  color: secondary,
                 ),
               ),
             ),
@@ -129,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
-                      color: Colors.white,
+                      color: principal,
                       icon: const Icon(Icons.fast_rewind),
                       onPressed: _decrementMusicCounter,
                     ),
@@ -137,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
-                      color: Colors.white,
+                      color: principal,
                       icon: Icon(selected ? Icons.play_arrow : Icons.pause),
                       onPressed: () {
                         setState(() {
@@ -150,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
-                      color: Colors.white,
+                      color: principal,
                       icon: const Icon(Icons.fast_forward),
                       onPressed: _incrementMusicCounter,
                     ),
